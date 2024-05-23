@@ -10,7 +10,7 @@ plt.rcParams['axes.unicode_minus'] = False
 #### Loading Questionnaire Data Form ####
 #########################################
 
-adhd = pd.read_csv('Project\ADHD\성인_ADHD_설문지.csv')
+adhd = pd.read_csv(r'C:\Users\User\Downloads\Project\ADHD\성인_ADHD_설문지.csv')
 
 #########################################
 ########### Data Preprocessing ##########
@@ -131,7 +131,7 @@ def Logistic_model(adhd_df):
 model = Logistic_model(adhd_df)
 
 # 모델 pickle 객체로 저장
-path = 'Project\ADHD\01_ADHD_ML'
+path = r'C:\Users\User\Downloads\Project\ADHD\01_ADHD_ML'
 
 with open(path + '\logistic_model.pkl', 'wb') as f:
     pickle.dump(model, f)
