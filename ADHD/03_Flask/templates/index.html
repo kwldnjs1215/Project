@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+</head>
+<body>
+    <h1>안녕하세요? 본인이 ADHD인지 궁금하신가요? 잘 오셨습니다!</h1>
+    <p>이 검사는 ASRS 증상체크리스트를 이용한 국제 표준 성인 ADHD검사 입니다.</p>
+    <p>질문에 답하실 때에는 지난 6개월 동안 귀하가 어떻게 느끼고 행동하였는지를 가장 잘 설명하는 칸에 표시해 주세요.</p>
+    <a href="{{ url_for('assessment') }}">검사 시작하기!</a>
+</body>
+</html>
