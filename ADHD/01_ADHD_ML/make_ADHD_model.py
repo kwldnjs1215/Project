@@ -69,13 +69,9 @@ def ADHD_score(adhd_df):
 
 adhd_df = ADHD_score(adhd_df)
 
-#########################################
-########## L########################################
+##############################################
 ########## Logistogistic Regression ##########
-f = ADHD_score(adhd_df)
-
-#########################################
-########## L#########################################
+##############################################
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -109,7 +105,7 @@ def Logistic_model(adhd_df):
         coef = coefficients[i]
         result = f"{feature}: {coef}"
         
-    """
+    
     # ROC curve 시각화
     y_scores = model.predict_proba(X_test)
     
@@ -128,7 +124,7 @@ def Logistic_model(adhd_df):
     plt.title('Receiver Operating Characteristic (ROC) Curve')
     plt.legend(loc="lower right")
     plt.show()
-    """
+    
         
     return model
 
@@ -155,7 +151,7 @@ for column in adhd_df.columns:
         formatted_pvalue = "{:.3e}".format(pvalue)
         test_result = f"{column} and ADHD risk group: statistic = {statistic}, ", f"pvalue = {formatted_pvalue}"
 
-"""
+
 # Q-Q plot 시각화
 adhd_df = adhd_df.astype('float')
 
@@ -171,7 +167,7 @@ for column in adhd_df.columns:
         index += 1
 
 plt.tight_layout()
-"""
+
 
 ###########################################
 ########## Homoscedasticity Test ##########
@@ -218,7 +214,7 @@ data = fa.loadings_
 
 sorted_indices = np.argsort(np.abs(data), axis=0)[::-1]
 
-"""
+
 # 요인 분석 시각화 (Bar Plot) : 1번 요인
 
 loadings_first_factor = np.abs(data[:, 0])
@@ -260,7 +256,7 @@ plt.ylabel('변수 (Variable)')
 plt.title('충동성 관련 문항')
 plt.grid(axis='x')
 plt.show()
-"""
+
 
 ###################################
 ########## Decision Tree ##########
@@ -282,11 +278,11 @@ score = clf.score(X_test, y_test)
 
 # 의사결정나무 시각화
 feature_names = X.columns
-"""
+
 plt.figure(figsize=(10, 10))
 plot_tree(clf, filled=True, feature_names=feature_names)
 plt.show()
-"""
+
 
 ########################################
 ########## Class Distribution ##########
@@ -318,7 +314,7 @@ venn_df['attention'] = (count_df['attention'] >= 3).astype(int)
 venn_df['hyperactivity'] = (count_df['hyperactivity'] >= 2).astype(int)
 venn_df['impulsivity'] = (count_df['impulsivity'] >= 2).astype(int)
 
-"""
+
 # Venn Diagram 시각화
 plt.figure(figsize=(12, 12))
 
@@ -339,4 +335,4 @@ for text in venn_diagram.subset_labels:
 
 plt.title("Venn Diagram of ADHD Symptoms", fontsize=30)
 plt.show()
-"""
+
