@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>ADHD Assessment Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="{{ url_for('static', filename='bootstrap-5.3.3-examples/assets/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }    
+        .centered-link {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .centered-link a {
+            font-size: 1.5rem;
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3px; /* 높이를 원하는 값으로 설정 */
+            background-color: transparent; /* 배경색을 투명하게 설정 */
+            border: solid #ccc; /* 테두리 스타일 변경 */
+            border-width: 0 0 3px 0; /* 아래쪽 테두리만 지정 */
+            box-shadow: none; /* 그림자 제거 */
+        }
+
+        .container {
+            display: flex; /* Flexbox 사용 */
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            height: 100vh; /* 높이를 뷰포트의 100%로 설정 */
+        }
+
+        .row {
+            flex: 1; /* 자식 요소를 균등하게 분할 */
+        }
+
+        @media (max-width: 768px) {
+            .b-example-divider {
+                height: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .b-example-divider {
+                height: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">ADHD 판단 결과</h1>
+        <h2 class="text-center">
+            {% if adhd_risk == 1 %}
+                <span class="text-danger">귀하는 ADHD일 가능성이 높습니다. 의사와의 상담이 필요합니다.</span>
+            {% else %}
+                귀하는 ADHD일 가능성이 낮습니다.
+            {% endif %}
+        </h2>
+        <h2 class="text-center">
+            {% if class_ != '' %}
+                현재의 정황으로 미루어 보아, 약간의 <span class="class_">{{ class_ }}</span>이 엿보입니다.
+            {% endif %}
+        </h2>
+
+        {% if final_attention %}
+        <div class="b-example-divider"></div>
+        <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+            <div class="col d-flex flex-column align-items-start gap-2">
+                <h3 class="fw-bold text-body-emphasis">부주의란?</h3>
+                <p class="text-body-secondary">집중력 부족, 쉽게 산만해짐, 과제나 일상 업무에서의 실수 증가로 나타납니다. 이는 학업과 직장 생활에서의 수행 능력을 저하시킬 수 있어 관리가 필요합니다.</p>
+            </div>
+    
+            <div class="col">
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+                    {% for item in final_attention %}
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            {% if item == '체크리스트 작성법 공부 및 체크리스트 작성' %}
+                                <img src="{{ url_for('static', filename='attention_issue_1.png') }}" alt="Attention Issue 1" style="max-width: 50px; max-height: 50px;">
+                            {% elif item == '집중모드 기능 사용' %}
+                                <img src="{{ url_for('static', filename='attention_issue_2.png') }}" alt="Attention Issue 2" style="max-width: 50px; max-height: 50px;">
+                            {% elif item == '자신의 주요 작업 공간 사진 찍은 후 항상 유지할 수 있도록 도움 주기' %}
+                                <img src="{{ url_for('static', filename='attention_issue_3.png') }}" alt="Attention Issue 3" style="max-width: 60px; max-height: 60px;">
+                            {% elif item == '루틴 짜주기 40분 집중 - 20분 휴식' %}
+                                <img src="{{ url_for('static', filename='attention_issue_4.png') }}" alt="Attention Issue 4" style="max-width: 50px; max-height: 50px;">
+                            {% endif %}
+                        </div>
+                       <h4 class="fw-semibold mb-0 text-body-emphasis">{{ item }}</h4>
+                        {% if item == '체크리스트 작성법 공부 및 체크리스트 작성' %}
+                            <p class="text-body-secondary">체크리스트 작성은 작업을 구조화하고 완료 여부를 확인하여 효율성을 높이며, 오류와 누락을 방지하여 작업 관리를 용이하게 합니다.</p>
+                        {% elif item == '집중모드 기능 사용' %}
+                            <p class="text-body-secondary">집중모드 기능을 사용하여 효율적인 업무 시간을 가질 수 있습니다.</p>
+                        {% elif item == '자신의 주요 작업 공간 사진 찍은 후 항상 유지할 수 있도록 도움 주기' %}
+                          <p class="text-body-secondary">작업 공간 사진을 찍고 유지하는 것은 작업환경을 시각적으로 추적하고 정리할 수 있어 효율성을 높이며, 필요한 물건의 위치를 기억하고 쉽게 찾을 수 있도록 돕습니다.</p>  
+                        {% elif item == '루틴 짜주기 40분 집중 - 20분 휴식' %}
+                           <p class="text-body-secondary">작업 효율을 높이고 피로를 줄여 장기적으로 성과를 증진시킬 수 있습니다. 이는 집중도를 유지하고 스트레스를 감소시켜 더 나은 작업 성과를 이끌어냅니다.</p>    
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+        {% if final_hyperactivity %}
+        <div class="b-example-divider"></div>
+        <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+            <div class="col d-flex flex-column align-items-start gap-2">
+                <h2 class="fw-bold text-body-emphasis">과잉행동이란?</h2>
+                <p class="text-body-secondary"> 주의력 결핍과 함께 지나치게 활동적이고 충동적인 행동을 특징으로 합니다. 이는 일상 생활과 사회적 관계에서 문제를 일으킬 수 있으며, 적절한 치료와 관리가 필요합니다.</p>
+            </div>
+
+            <div class="col">
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+                    {% for item in final_hyperactivity %}
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                {% if item == '음악감상' %}
+                                    <a href="https://www.youtube.com/watch?v=mIYzp5rcTvU">
+                                        <img src="{{ url_for('static', filename='hyperactivity_issue_1.png') }}" alt="hyperactivity Issue 1" style="max-width: 50px; max-height: 50px;">
+                                    </a>
+                                {% elif item == '명상 및 요가' %}
+                                    <a href="https://www.youtube.com/watch?v=dZewQEbQQM0">
+                                    <img src="{{ url_for('static', filename='hyperactivity_issue_2.png') }}" alt="hyperactivity Issue 2" style="max-width: 70px; max-height: 60px;">
+                                    </a>
+                                {% elif item == 'ASMR' %}
+                                    <a href="https://www.youtube.com/watch?v=NWlFKrzvsm0">
+                                    <img src="{{ url_for('static', filename='hyperactivity_issue_3.png') }}" alt="hyperactivity Issue 3" style="max-width: 50px; max-height: 50px;">
+                                    </a>    
+                                {% elif item == '운동' %}
+                                    <a href="https://www.youtube.com/watch?v=bNIC0tYhZNo">
+                                    <img src="{{ url_for('static', filename='hyperactivity_issue_4.png') }}" alt="hyperactivity Issue 4" style="max-width: 50px; max-height: 50px;">
+                                    </a>    
+                                 {% endif %}
+                            </div>
+                        </div>
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">{{ item }}</h4>
+                         {% if item == '음악감상' %}
+                             <p class="text-body-secondary">주의 집중력을 증진시키고 정서적 안정감을 제공하여 스트레스와 불안을 완화합니다. 또한 음악은 집중력을 유지하고 자극을 조절하여 학습 및 일상 생활에 도움이 됩니다.</p>
+                         {% elif item == '명상 및 요가' %}
+                             <p class="text-body-secondary">자기 조절 능력을 향상시키며 스트레스를 감소시키고 안정감을 제공합니다. 또한 순환된 호흡과 몸의 움직임을 통해 뇌 활동을 조절하고 집중력을 향상시키는데 도움이 됩니다.</p>
+                         {% elif item == 'ASMR' %}
+                           <p class="text-body-secondary">스트레스를 감소시키며 불안을 완화하는데 도움이 됩니다. 소리와 시각적 자극을 통해 뇌를 진정시키고 쾌적한 휴식 상태를 유도하여 몰입과 평온을 촉진합니다.</p>  
+                         {% elif item == '운동' %}
+                            <p class="text-body-secondary">뇌 기능을 개선하는 데 도움이 됩니다. 신체 활동은 주의력을 집중시키고 호르몬 분비를 조절하여 스트레스와 불안을 완화하며, 운동 후의 쾌적한 피로감은 수면을 개선하여 일상적인 기능에 도움을 줍니다.</p>    
+                         {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if final_impulsivity %}
+        <div class="b-example-divider"></div>
+        <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+            <div class="col d-flex flex-column align-items-start gap-2">
+                <h3 class="fw-bold text-body-emphasis">충동성이란?</h3>
+                <p class="text-body-secondary">즉각적인 보상을 추구하고 행동을 통제하기 어려워하는 특징을 지닙니다. 이는 불필요한 위험을 감수하게 하고 사회적, 직업적 관계에 문제를 일으킬 수 있습니다.</p>
+            </div>
+
+            <div class="col">
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+                    {% for item in final_impulsivity %}
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                                {% if item == '감정일기 쓰기' %}
+                                    <img src="{{ url_for('static', filename='impulsivity_issue_1.png') }}" alt="impulsivity Issue 1" style="max-width: 90px; max-height: 90px;">
+                                {% elif item == '스피칭 연습' %}
+                                    <a href="https://www.youtube.com/watch?v=meGoyvyNV9A">   
+                                    <img src="{{ url_for('static', filename='impulsivity_issue_2.png') }}" alt="impulsivity Issue 2" style="max-width: 50px; max-height: 50px;">
+                                    </a> 
+                                {% elif item == '심호흡 연습' %}
+                                    <a href="https://www.youtube.com/watch?v=qkDjMJkLxIo">
+                                    <img src="{{ url_for('static', filename='impulsivity_issue_3.png') }}" alt="impulsivity Issue 3" style="max-width: 50px; max-height: 50px;">
+                                    </a>    
+                                {% elif item == '분노 조절하는 법 연습' %}
+                                    <a href ="https://www.youtube.com/watch?v=cvPS_25gRPs">
+                                    <img src="{{ url_for('static', filename='impulsivity_issue_4.png') }}" alt="impulsivity Issue 4" style="max-width: 60px; max-height: 60px;">
+                                    </a> 
+                                {% endif %}
+                            </div>
+                        </div>
+                         <h4 class="fw-semibold mb-0 text-body-emphasis">{{ item }}</h4>
+                          {% if item == '감정일기 쓰기' %}
+                              <p class="text-body-secondary">자기인식과 감정 조절 능력을 향상시키는 데 도움이 됩니다. 일기를 통해 감정을 표현하고 분석함으로써 자신의 감정과 행동에 대한 이해를 높이고, 더 건강한 대처 방법을 찾아낼 수 있습니다.</p>
+                          {% elif item == '스피칭 연습' %}
+                              <p class="text-body-secondary">충동성을 긍정적 에너지로 전환하여 사회적 소통 능력을 강화하는 데 도움을 줍니다. 이를 통해 이들은 자신의 생각을 효과적으로 표현하고, 더 나은 대인 관계를 형성할 수 있습니다.</p>
+                          {% elif item == '심호흡 연습' %}
+                            <p class="text-body-secondary">긴장 완화와 주의 집중력을 향상시키며, 감정 조절을 돕습니다. 이를 통해 충동적 행동을 줄이고, 더 차분하고 안정된 상태를 유지할 수 있습니다.</p>  
+                          {% elif item == '분노 조절하는 법 연습' %}
+                             <p class="text-body-secondary">감정 조절 능력을 향상시키고, 충동적 분노 반응을 줄이는 데 도움을 줍니다. 이를 통해 더 평온한 상태를 유지하며 대인 관계와 전반적인 삶의 질을 개선할 수 있습니다.</p>    
+                          {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="centered-link mt-4">
+            <a href="{{ url_for('index') }}" style="text-decoration: none;" >Back to Home</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap-5.3.3-examples/assets/dist/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
