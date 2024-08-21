@@ -206,7 +206,7 @@ from factor_analyzer import FactorAnalyzer
 
 X = adhd_df.drop(columns=['ADHD 위험군'])
 
-fa = FactorAnalyzer(n_factors=3, method='ml', rotation='promax')
+fa = FactorAnalyzer(n_factors=3, method='minres', rotation='promax')
 
 fa.fit(X)
 
